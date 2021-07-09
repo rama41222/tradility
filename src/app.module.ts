@@ -4,7 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TradeModule } from './modules/trade/trade.module';
 import { TradeService } from './modules/trade/trade.service';
 import { FixerService } from './services/fixer.service';
-
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
   imports: [
     GraphQLModule.forRoot({
@@ -12,6 +12,7 @@ import { FixerService } from './services/fixer.service';
     }),
     TradeModule,
     HttpModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [],
   providers: [TradeService, FixerService],
