@@ -31,11 +31,13 @@
     "apollo-server-express": "^2.25.2",
     "graphql": "^15.5.1",
     "graphql-tools": "^7.0.5",
+    "graphql-type-json": "^0.3.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.13",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",

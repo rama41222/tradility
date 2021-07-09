@@ -1,20 +1,20 @@
-import { HttpModule } from '@nestjs/axios';
+import { HttpModule, HttpService } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TradeModule } from './modules/trade/trade.module';
-import { TradeService } from './modules/trade/trade.service';
-import { FixerService } from './services/fixer.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { FixerService } from './modules/fixer/fixer.service';
+import { FixerModule } from './modules/fixer/fixer.module';
 @Module({
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: true,
     }),
     TradeModule,
-    HttpModule,
+    FixerModule,
     ScheduleModule.forRoot(),
   ],
   controllers: [],
-  providers: [TradeService, FixerService],
+  providers: [],
 })
 export class AppModule {}
