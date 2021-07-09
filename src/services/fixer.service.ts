@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import Data from './mocker/fixer.response.json';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 @Injectable({})
 export class FixerService {
   private readonly logger = new Logger(FixerService.name);
@@ -18,8 +18,11 @@ export class FixerService {
     return Data;
   }
 
-  @Cron('*/5 * * * * *')
+  @Cron(CronExpression.EVERY_HOUR, {
+    name: 'updateRedis',
+    timeZone: 'IST',
+  })
   updateRedis() {
-    this.logger.debug('Called when the current second is 5');
+    this.logger.debug('Called every hour');
   }
 }
