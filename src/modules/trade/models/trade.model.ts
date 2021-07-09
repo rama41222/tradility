@@ -4,14 +4,14 @@ import JSON from 'graphql-type-json';
 @ObjectType()
 export class Trade {
   @Field()
-  base?: string;
+  base: string;
 
   @Field()
-  date?: string;
+  date: string;
 
   @Field(() => Int)
   timestamp?: number;
 
   @Field(() => JSON)
-  rates?: any;
+  rates: any;
 }
