@@ -20,7 +20,7 @@ export class FixerService {
 
   @Cron(CronExpression.EVERY_HOUR, {
     name: 'updateRedis',
-    timeZone: 'IST',
+    timeZone: 'Asia/Colombo',
   })
   updateRedis() {
     this.logger.debug('Called every hour');
