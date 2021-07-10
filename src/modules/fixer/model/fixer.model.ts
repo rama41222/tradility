@@ -1,5 +1,4 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
-import JSON from 'graphql-type-json';
 import { MainCurrency } from '../fixer.types.model';
 
 @ObjectType()

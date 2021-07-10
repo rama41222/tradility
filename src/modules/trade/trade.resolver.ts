@@ -1,5 +1,6 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import { Fixer } from '../fixer/model/fixer.model';
+import { ConvertInput } from './dto/args/convert.args';
 import { Trade } from './models/trade.model';
 import { TradeService } from './trade.service';
 
@@ -7,19 +8,22 @@ import { TradeService } from './trade.service';
 export class TradeResolver {
   constructor(private readonly tradeService: TradeService) {}
 
-  @Query(() => Trade)
+  @Query(() => Trade, { name: 'trade', nullable: false })
   getRates(): Trade {
     const trades = this.tradeService.fetchTrades();
     return trades;
   }
 
-  @Query(() => [Fixer])
+  @Query(() => [Fixer], { name: 'fixers', nullable: false })
   getMajorCurrencyRates(): Fixer[] {
     return this.tradeService.fetchFixers();
   }
 
   @Query(() => [Fixer])
-  convert(): Fixer[] {
-    return this.tradeService.fetchFixers();
+  convert(
+    @Args({ name: 'pairs', type: () => [ConvertInput] })
+    pairs: Array<ConvertInput>,
+  ): Fixer[] {
+    return this.tradeService.fetchCustomConversions(pairs);
   }
 }
