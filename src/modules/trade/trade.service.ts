@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { FixerService } from 'src/modules/fixer/fixer.service';
 import { Fixer } from '../fixer/model/fixer.model';
-import { ConvertInput } from './dto/args/convert.args';
+import { ConvertInput } from './dto/inputs/convert.input';
 import { Trade } from './models/trade.model';
 
 @Injectable({})
@@ -19,6 +19,7 @@ export class TradeService {
 
   fetchCustomConversions(convertPair: ConvertInput[]): Fixer[] {
     const trades = this.fixerService.fetchMock();
+    console.log(convertPair.map( i => i));
     return this.fixerService.majorCurrencyValues(trades);
   }
 }

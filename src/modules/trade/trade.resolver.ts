@@ -1,6 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { Fixer } from '../fixer/model/fixer.model';
-import { ConvertInput } from './dto/args/convert.args';
+import { ConvertInput } from './dto/inputs/convert.input';
 import { Trade } from './models/trade.model';
 import { TradeService } from './trade.service';
 
