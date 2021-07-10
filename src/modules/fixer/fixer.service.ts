@@ -36,17 +36,23 @@ export class FixerService {
         });
       });
     });
-    return currencies;
+    return [];
   }
 
   anyCurrencyValue({ rates, timestamp, date }: Trade, pairs): Fixer[] {
-    return pairs.map(({ from, to }: { from: string; to: string }) => ({
-      from,
-      to,
-      rate: converter(rates[from], rates[to]),
-      timestamp,
-      date,
-    }));
+    return pairs
+      .map(({ from, to }: { from: string; to: string }) => {
+        if (rates[from] && rates[to]) {
+          return {
+            from,
+            to,
+            rate: converter(rates[from], rates[to]),
+            timestamp,
+            date,
+          };
+        }
+      })
+      .filter(Boolean);
   }
 
   @Cron(CronExpression.EVERY_HOUR, {
