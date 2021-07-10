@@ -17,9 +17,13 @@ export class TradeService {
     return this.fixerService.majorCurrencyValues(trades);
   }
 
+  fetchAnyFixers(): Fixer[] {
+    const trades = this.fixerService.fetchMock();
+    return this.fixerService.majorCurrencyValues(trades);
+  }
+
   fetchCustomConversions(convertPair: ConvertInput[]): Fixer[] {
     const trades = this.fixerService.fetchMock();
-    console.log(convertPair.map( i => i));
-    return this.fixerService.majorCurrencyValues(trades);
+    return this.fixerService.anyCurrencyValue(trades, convertPair);
   }
 }

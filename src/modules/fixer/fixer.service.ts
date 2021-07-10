@@ -39,6 +39,16 @@ export class FixerService {
     return currencies;
   }
 
+  anyCurrencyValue({ rates, timestamp, date }: Trade, pairs): Fixer[] {
+    return pairs.map(({ from, to }: { from: string; to: string }) => ({
+      from,
+      to,
+      rate: converter(rates[from], rates[to]),
+      timestamp,
+      date,
+    }));
+  }
+
   @Cron(CronExpression.EVERY_HOUR, {
     name: 'updateRedis',
     timeZone: 'Asia/Colombo',
