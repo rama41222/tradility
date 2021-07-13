@@ -14,6 +14,7 @@ import {
 } from './fixer.types.model';
 import { Fixer } from './model/fixer.model';
 import { ConfigService } from '@nestjs/config';
+import RESPONSES from '../../constants';
 
 @Injectable({})
 export class FixerService {
@@ -53,7 +54,7 @@ export class FixerService {
             });
             return resolve(res.data);
           }
-          return reject('Response Data not found');
+          return reject(RESPONSES.ERRORS.Fixer_Api_Not_Found);
         });
     });
   }
@@ -144,10 +145,10 @@ export class FixerService {
           await this.cacheManager.set('fixer_data', res.data, {
             ttl: 3600,
           });
-          this.logger.verbose('Cron task executed succesfully');
+          this.logger.verbose(RESPONSES.SUCCESS.Cron_Task_Success);
           return;
         }
-        this.logger.error('Cron task executed but Response data not found');
+        this.logger.error(RESPONSES.ERRORS.Cron_Task_Error);
       });
   }
 }

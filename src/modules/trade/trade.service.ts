@@ -3,7 +3,7 @@ import { FixerService } from 'src/modules/fixer/fixer.service';
 import { Fixer } from '../fixer/model/fixer.model';
 import { ConvertInput } from './dto/inputs/convert.input';
 import { Trade } from './models/trade.model';
-
+import RESPONSES from '../../constants';
 @Injectable({})
 export class TradeService {
   private readonly logger = new Logger(TradeService.name);
@@ -37,8 +37,8 @@ export class TradeService {
       const trades = await this.fixerService.fetch();
       return this.fixerService.anyCurrencyValue(trades, convertPair);
     } catch (e) {
-      this.logger.error('Fixer API Error', e.message);
-      throw new Error(`Fixer API Error \n ${e}`);
+      this.logger.error(RESPONSES.ERRORS.Fixer_Api_Error, e.message);
+      throw new Error(e);
     }
   }
 }
