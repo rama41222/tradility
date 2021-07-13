@@ -2,7 +2,7 @@
 
 This API will return a set of Curriency conversion rates hourly. It helps you to convert between any of the currencies available using the GraphQL API. This api follows a code first approach to graphql.
 
-Given below is a sample GQL
+Given below is a sample GQL. Open [grahpiql](http://localhost:3000/graphql)
 
 * The fixers query will give you the mamjor currency conversions.
 
