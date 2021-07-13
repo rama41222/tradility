@@ -9,3 +9,11 @@ export const MainCurrencyConversions = {
   SGD: [MainCurrency.USD],
   HKD: [MainCurrency.USD],
 };
+
+export interface CalculateRate {
+  from: MainCurrency;
+  to: MainCurrency;
+  rate: number;
+  timestamp: number;
+  date: string;
+}

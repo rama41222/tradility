@@ -5,6 +5,10 @@ import { TradeModule } from './modules/trade/trade.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FixerService } from './modules/fixer/fixer.service';
 import { FixerModule } from './modules/fixer/fixer.module';
+
+/**
+ * Main App modules
+ */
 @Module({
   imports: [
     GraphQLModule.forRoot({
