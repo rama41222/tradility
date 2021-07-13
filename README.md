@@ -76,6 +76,8 @@ yarn run doc
 
 [ ] Add more unit tests
 
+[ ] Increae test Coverage
+
 ## All Commands
 
 ```bash

@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { FixerService } from 'src/modules/fixer/fixer.service';
+import { FixerService } from './../fixer/fixer.service';
 import { Fixer } from '../fixer/model/fixer.model';
 import { ConvertInput } from './dto/inputs/convert.input';
 import { Trade } from './models/trade.model';
 import RESPONSES from '../../constants';
+
 @Injectable({})
 export class TradeService {
   private readonly logger = new Logger(TradeService.name);

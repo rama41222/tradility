@@ -6,6 +6,7 @@ import { converter } from './fixer.utils';
 import { Trade } from '../trade/models/trade.model';
 import { Cache } from 'cache-manager';
 import {
+
   MainCurrency,
   MainCurrencyConversions,
   CalculateRate,
@@ -20,7 +21,7 @@ export class FixerService {
   private readonly logger = new Logger(FixerService.name);
 
   /**
-   * @param  {HttpService} privatereadonlyhttpService Call the http server
+   * @param  {HttpService} httpService Call the http server
    */
   constructor(
     private readonly httpService: HttpService,
