@@ -10,33 +10,33 @@ export class TradeResolver {
 
   /**
    * This query will return all the trades
-   * @returns {Trade[]}
+   * @returns {Promise<Trade>}
    */
   @Query(() => Trade, { name: 'trade', nullable: false })
-  getRates(): Trade {
-    const trades = this.tradeService.fetchTrades();
+  async getRates(): Promise<Trade> {
+    const trades = await this.tradeService.fetchTrades();
     return trades;
   }
 
   /**
    * This query will return only the major currency conversions
-   * @returns {Trade[]}
+   * @returns {Promise<Fixer[]>}
    */
   @Query(() => [Fixer], { name: 'fixers', nullable: false })
-  getMajorCurrencyRates(): Fixer[] {
+  async getMajorCurrencyRates(): Promise<Fixer[]> {
     return this.tradeService.fetchFixers();
   }
 
   /**
    * This query will return the covnersion rates for a givern number of currency pairs
    * @param pairs currency conversion apir
-   * @returns Fixer[]
+   * @returns Promise<Fixer[]>
    */
   @Query(() => [Fixer])
-  convert(
+  async convert(
     @Args({ name: 'pairs', type: () => [ConvertInput] })
     pairs: Array<ConvertInput>,
-  ): Fixer[] {
+  ): Promise<Fixer[]> {
     return this.tradeService.fetchCustomConversions(pairs);
   }
 }

@@ -1,16 +1,16 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import * as FixerData from './mocker/fixer.response.json';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { converter } from './fixer.utils';
 import { Trade } from '../trade/models/trade.model';
+import { Cache } from 'cache-manager';
 import {
   MainCurrency,
   MainCurrencyConversions,
   CalculateRate,
-  Env,
 } from './fixer.types.model';
 import { Fixer } from './model/fixer.model';
 import { ConfigService } from '@nestjs/config';
@@ -26,23 +26,52 @@ export class FixerService {
   constructor(
     private readonly httpService: HttpService,
     private configService: ConfigService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   /**
    * This function fetches all the currency conversions from
    * Fixer api
-   * @returns {Observable<AxiosResponse<Trade[]>>} Data from Fixer API
+   * @returns {Observable<AxiosResponse<Trade>>} Data from Fixer API
    */
-  fetch(): Observable<AxiosResponse<unknown[]>> {
-    return this.httpService.get(this.configService.get<string>('api.fixer'));
+  async fetch(): Promise<Trade> {
+    const fixerData = (await this.cacheManager.get('fixer_data')) as Trade;
+
+    if (fixerData) {
+      return fixerData;
+    }
+
+    /** If not avaialble, store the data with 3600 ttl */
+    return new Promise((resolve, reject) => {
+      this.httpService
+        .get(this.configService.get<string>('api.fixer'))
+        .subscribe(async (res) => {
+          if (res?.data) {
+            /** Cache data with 3600 ttl */
+            await this.cacheManager.set('fixer_data', res.data, {
+              ttl: 3600,
+            });
+            return resolve(res.data);
+          }
+          return reject('Response Data not found');
+        });
+    });
   }
 
   /**
    * This function fetch mock data from a hardcoded json
    * Just for the dev purposes
-   * @returns {Trade}
+   * @returns {Promise<Trade>}
    */
-  fetchMock(): Trade {
+  async fetchMock(): Promise<Trade> {
+    /** Query cache for the fixer api data */
+    const fixerData = (await this.cacheManager.get('fixer_data')) as Trade;
+    if (fixerData) {
+      return fixerData;
+    }
+
+    /** If not avaialble, store the data with 3600 ttl */
+    await this.cacheManager.set('fixer_data', FixerData, { ttl: 3600 });
     return FixerData;
   }
 
@@ -102,11 +131,23 @@ export class FixerService {
    * Cron job to update every hour
    * Fetches data from Fixer api and caches it
    */
-  @Cron(CronExpression.EVERY_HOUR, {
+  @Cron(CronExpression.EVERY_10_HOURS, {
     name: 'updateRedis',
     timeZone: 'Asia/Colombo',
   })
   updateRedis() {
-    this.logger.debug('Called every hour');
+    this.httpService
+      .get(this.configService.get<string>('api.fixer'))
+      .subscribe(async (res) => {
+        if (res?.data) {
+          /** Cache data with 3600 ttl */
+          await this.cacheManager.set('fixer_data', res.data, {
+            ttl: 3600,
+          });
+          this.logger.verbose('Cron task executed succesfully');
+          return;
+        }
+        this.logger.error('Cron task executed but Response data not found');
+      });
   }
 }

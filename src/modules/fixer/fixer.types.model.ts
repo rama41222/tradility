@@ -23,4 +23,8 @@ export interface Env {
   api: {
     fixer: string;
   };
+  redis: {
+    host: string;
+    port: number;
+  };
 }

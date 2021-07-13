@@ -95,12 +95,7 @@ yarn start:debug
 # Run the linter
 yarn lint
 
-# Run the unit tests
-yarn test
-
-# Run the integration tests
-yarn run test:e2e
-``
+```
 
 ## Test
 
