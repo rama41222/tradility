@@ -23,33 +23,31 @@ export class FixerService {
     return FixerData;
   }
 
-  majorCurrencyValues({ rates, timestamp, date }: Trade): Fixer[] {
+  calcualteRate(trade: Trade, fromCurrency: string, toCurrency: string) {
+    return {
+      from: fromCurrency as MainCurrency,
+      to: toCurrency,
+      rate: converter(trade.rates[fromCurrency], trade.rates[toCurrency]),
+      timestamp: trade.timestamp,
+      date: trade.date,
+    };
+  }
+
+  majorCurrencyValues(trade: Trade): Fixer[] {
     const currencies = [];
     Object.keys(MainCurrencyConversions).forEach((key) => {
       MainCurrencyConversions[key].forEach((curr: MainCurrency) => {
-        currencies.push({
-          from: key as MainCurrency,
-          to: curr,
-          rate: converter(rates[key], rates[curr]),
-          timestamp,
-          date,
-        });
+        currencies.push(this.calcualteRate(trade, key, curr));
       });
     });
-    return [];
+    return currencies;
   }
 
-  anyCurrencyValue({ rates, timestamp, date }: Trade, pairs): Fixer[] {
+  anyCurrencyValue(trade: Trade, pairs): Fixer[] {
     return pairs
       .map(({ from, to }: { from: string; to: string }) => {
-        if (rates[from] && rates[to]) {
-          return {
-            from,
-            to,
-            rate: converter(rates[from], rates[to]),
-            timestamp,
-            date,
-          };
+        if (trade.rates[from] && trade.rates[to]) {
+          return this.calcualteRate(trade, from, to);
         }
       })
       .filter(Boolean);
