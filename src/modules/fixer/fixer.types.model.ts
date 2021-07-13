@@ -17,3 +17,10 @@ export interface CalculateRate {
   timestamp: number;
   date: string;
 }
+
+export interface Env {
+  port: number;
+  api: {
+    fixer: string;
+  };
+}

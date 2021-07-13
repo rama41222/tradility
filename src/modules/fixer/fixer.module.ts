@@ -1,5 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { FixerService } from '../fixer/fixer.service';
 
 /**
@@ -7,7 +8,7 @@ import { FixerService } from '../fixer/fixer.service';
  */
 @Module({
   imports: [HttpModule],
-  providers: [FixerService],
+  providers: [FixerService, ConfigService],
   exports: [FixerService],
 })
 export class FixerModule {}

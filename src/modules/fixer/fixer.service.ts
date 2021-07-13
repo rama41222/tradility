@@ -10,8 +10,10 @@ import {
   MainCurrency,
   MainCurrencyConversions,
   CalculateRate,
+  Env,
 } from './fixer.types.model';
 import { Fixer } from './model/fixer.model';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable({})
 export class FixerService {
@@ -21,7 +23,10 @@ export class FixerService {
   /**
    * @param  {HttpService} privatereadonlyhttpService Call the http server
    */
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private configService: ConfigService,
+  ) {}
 
   /**
    * This function fetches all the currency conversions from
@@ -29,7 +34,7 @@ export class FixerService {
    * @returns {Observable<AxiosResponse<Trade[]>>} Data from Fixer API
    */
   fetch(): Observable<AxiosResponse<unknown[]>> {
-    return this.httpService.get(process.env.FIXER_API);
+    return this.httpService.get(this.configService.get<string>('api.fixer'));
   }
 
   /**
