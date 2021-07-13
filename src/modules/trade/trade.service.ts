@@ -7,7 +7,7 @@ import RESPONSES from '../../constants';
 @Injectable({})
 export class TradeService {
   private readonly logger = new Logger(TradeService.name);
-  
+
   constructor(private readonly fixerService: FixerService) {}
 
   /**

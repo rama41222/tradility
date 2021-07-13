@@ -1,7 +1,5 @@
 import { HttpService } from '@nestjs/axios';
 import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { AxiosResponse } from 'axios';
 import * as FixerData from './mocker/fixer.response.json';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { converter } from './fixer.utils';

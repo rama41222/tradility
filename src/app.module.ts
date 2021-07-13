@@ -1,4 +1,4 @@
-import { HttpModule, HttpService } from '@nestjs/axios';
+
 import { Module, CacheModule } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TradeModule } from './modules/trade/trade.module';
