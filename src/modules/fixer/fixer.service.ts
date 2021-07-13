@@ -29,7 +29,7 @@ export class FixerService {
    * @returns {Observable<AxiosResponse<Trade[]>>} Data from Fixer API
    */
   fetch(): Observable<AxiosResponse<unknown[]>> {
-    return this.httpService.get('http://localhost:3000/cats');
+    return this.httpService.get(process.env.FIXER_API);
   }
 
   /**
